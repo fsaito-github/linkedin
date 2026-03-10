@@ -1,6 +1,6 @@
-# LinkedIn Posts — GitHub Copilot Series
+# LinkedIn Post Creator
 
-Série de 6 posts sobre o ecossistema GitHub Copilot, publicados via MCP Server.
+Projeto para criar e publicar posts técnicos no LinkedIn usando GitHub Copilot como agente de escrita e a LinkedIn API para publicação direta.
 
 ## 📁 Estrutura
 
@@ -12,25 +12,8 @@ linkedin/
 │   │   └── linkedin-tech-post.agent.md    # Agente @linkedin-tech-post
 │   └── prompts/
 │       └── linkedin-tech-post.prompt.md   # Slash command /linkedin-tech-post
-├── images/                                # Banners 1200x628 para cada post
-│   ├── post-1-copilot.png
-│   ├── post-2-copilot-cli.png
-│   ├── post-3-copilot-plugins.png
-│   ├── post-4-copilot-skills.png
-│   ├── post-5-copilot-sdk.png
-│   └── post-6-multi-agents.png
-├── post-1-copilot-en.md                   # Post 1: Copilot & First Agent
-├── post-1-copilot-pt.md
-├── post-2-copilot-cli-en.md               # Post 2: Copilot CLI
-├── post-2-copilot-cli-pt.md
-├── post-3-copilot-plugins-en.md           # Post 3: Copilot Plugins
-├── post-3-copilot-plugins-pt.md
-├── post-4-copilot-skills-en.md            # Post 4: Copilot Skills
-├── post-4-copilot-skills-pt.md
-├── post-5-copilot-sdk-en.md               # Post 5: Copilot SDK
-├── post-5-copilot-sdk-pt.md
-├── post-6-multi-agents-en.md              # Post 6: Multi-Agent Patterns
-└── post-6-multi-agents-pt.md
+├── images/                                # Banners gerados (1200x628)
+└── post-{N}-{tema}-{idioma}.md            # Posts gerados
 ```
 
 ## 🤖 Agente de Criação de Posts

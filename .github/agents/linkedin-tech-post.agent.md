@@ -1,11 +1,12 @@
 ---
-description: "Cria posts técnicos otimizados para LinkedIn a partir de temas, experiências ou aprendizados. Suporta bilíngue (PT-BR + EN), geração de banners e publicação via LinkedIn API."
+description: "Cria posts técnicos otimizados para LinkedIn a partir de temas, experiências ou aprendizados. Suporta bilíngue (PT-BR + EN), banners, carrosséis via 2slides e publicação via LinkedIn API."
 agent: "linkedin-tech-post"
 model: "claude-sonnet-4-20250514"
 tools:
   - "read"
   - "edit/createFile"
   - "runCommand"
+  - "2slides/*"
 ---
 
 # LinkedIn Tech Post: Especialista em Posts Técnicos para LinkedIn
@@ -270,21 +271,33 @@ Cores por tema (consistência da série):
 
 Carrosséis geram **6x mais engajamento** que texto puro. Quando `formato=carrossel`:
 
-1. Gerar PDF com slides 1080x1080 usando Python (Pillow ou reportlab)
-2. Estrutura do carrossel:
+1. Preparar primeiro o **roteiro dos slides** (5 a 8 páginas):
    - **Slide 1 (Capa):** Hook com conflito claro — frase que para o scroll
    - **Slides 2-7 (Conteúdo):** 1 ideia por slide, com progressão problema → insight → implicação
    - **Slide final:** CTA específico + hashtags + "Salve este post para referência"
-3. Design: fundo escuro (#0D1117), texto branco, acento na cor do tema
-4. Texto máximo por slide: 50 palavras (legibilidade mobile)
-5. Carrossel é preferível para:
+2. **Preferir 2slides via MCP** quando disponível:
+   - Usar `slides_create_pdf_slides` com:
+     - `userInput`: roteiro completo dos slides
+     - `designStyle`: `modern, dark background (#0D1117), bold typography, purple accent`
+     - `aspectRatio`: `1:1`
+     - `resolution`: `2K`
+     - `page`: `5-8`
+   - Se a geração for assíncrona, consultar com `jobs_get` até `status: success`
+   - Se necessário escolher tema antes, usar `themes_search` buscando termos como `modern`, `dark`, `tech`
+3. Ao concluir a geração no 2slides:
+   - Disponibilizar o `downloadUrl` ao autor
+   - Baixar/salvar o PDF em `images/post-{N}-{tema}-carousel.pdf` quando o ambiente permitir
+4. **Fallback offline:** se o 2slides não estiver configurado ou falhar, usar `generate-carousel.py` como plano B local
+5. Design base: fundo escuro (#0D1117), texto branco, acento na cor do tema
+6. Texto máximo por slide: 50 palavras (legibilidade mobile)
+7. Carrossel é preferível para:
    - comparativos
    - listas de aprendizados
    - erros recorrentes e como evitar
    - frameworks/checklists
    - temas técnicos densos que ficariam pesados em texto puro
-6. Ver `generate-carousel.py` como template base
-7. Salvar em `images/post-{N}-{tema}-carousel.pdf`
+8. Ver `generate-carousel.py` como template base
+9. Salvar em `images/post-{N}-{tema}-carousel.pdf`
 
 ### Step 7: Apresentar ao autor
 
@@ -301,8 +314,11 @@ Entregar:
 6. **Sugestão de tags** — 1 a 3 pessoas relevantes para o autor considerar marcar
 7. **Contagem de caracteres** — confirmar que está dentro do limite de 2950
 8. **Plano de comentário inicial** — sugerir 1 pergunta de follow-up que o autor pode usar ao responder os primeiros comentários
+9. **Se for carrossel:** confirmar `downloadUrl` do 2slides ou path final do PDF salvo
 
 ### Step 8: Publicar (se solicitado)
+
+#### 8a. Publicar post de texto
 
 Publicar via LinkedIn API usando o token salvo:
 
@@ -335,6 +351,86 @@ Invoke-RestMethod -Uri "https://api.linkedin.com/v2/ugcPosts" -Method POST -Head
 ```
 
 ⚠️ **Sempre pedir confirmação antes de publicar.** Nunca publicar automaticamente.
+
+#### 8b. Publicar carrossel orgânico como document post
+
+No LinkedIn, **carrossel orgânico via API** deve ser publicado como **document post** (PDF). O fluxo é:
+
+1. Registrar upload do documento em `POST /rest/documents?action=initializeUpload`
+2. Fazer upload do PDF para a `uploadUrl` retornada
+3. Consultar `GET /rest/documents/{documentUrn}` até `status = AVAILABLE`
+4. Criar o post em `POST /rest/posts` usando o `document URN`
+
+Exemplo em PowerShell:
+
+```powershell
+$tokenData = Get-Content "$env:USERPROFILE\.linkedin-mcp\tokens\access_token.json" | ConvertFrom-Json
+$content = Get-Content "linkedin/post-{N}-{tema}-pt.md" -Raw
+$pdfPath = "linkedin/images/post-{N}-{tema}-carousel.pdf"
+
+$headers = @{
+    Authorization = "Bearer $($tokenData.access_token)"
+    "Content-Type" = "application/json"
+    "LinkedIn-Version" = "202501"
+    "X-Restli-Protocol-Version" = "2.0.0"
+}
+
+$initBody = @{
+    initializeUploadRequest = @{
+        owner = $tokenData.urn
+    }
+} | ConvertTo-Json -Depth 4
+
+$init = Invoke-RestMethod `
+    -Uri "https://api.linkedin.com/rest/documents?action=initializeUpload" `
+    -Method POST -Headers $headers -Body $initBody
+
+Invoke-WebRequest `
+    -Uri $init.value.uploadUrl `
+    -Method PUT `
+    -Headers @{ Authorization = "Bearer $($tokenData.access_token)" } `
+    -InFile $pdfPath `
+    -ContentType "application/pdf"
+
+$documentUrn = $init.value.document
+
+do {
+    Start-Sleep -Seconds 3
+    $encodedDocumentUrn = [System.Uri]::EscapeDataString($documentUrn)
+    $documentStatus = Invoke-RestMethod `
+        -Uri "https://api.linkedin.com/rest/documents/$encodedDocumentUrn" `
+        -Method GET -Headers $headers
+} while ($documentStatus.status -eq "PROCESSING" -or $documentStatus.status -eq "WAITING_UPLOAD")
+
+if ($documentStatus.status -ne "AVAILABLE") {
+    throw "Documento não ficou disponível. Status: $($documentStatus.status)"
+}
+
+$postBody = @{
+    author = $tokenData.urn
+    commentary = $content.Trim()
+    visibility = "PUBLIC"
+    distribution = @{
+        feedDistribution = "MAIN_FEED"
+        targetEntities = @()
+        thirdPartyDistributionChannels = @()
+    }
+    content = @{
+        media = @{
+            title = [System.IO.Path]::GetFileName($pdfPath)
+            id = $documentUrn
+        }
+    }
+    lifecycleState = "PUBLISHED"
+    isReshareDisabledByAuthor = $false
+} | ConvertTo-Json -Depth 6
+
+Invoke-RestMethod `
+    -Uri "https://api.linkedin.com/rest/posts" `
+    -Method POST -Headers $headers -Body $postBody
+```
+
+⚠️ Para carrossel, validar que o PDF não excede 100 MB e que o documento ficou `AVAILABLE` antes de criar o post.
 
 ## Anti-padrões (NUNCA fazer)
 

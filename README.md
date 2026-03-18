@@ -45,6 +45,7 @@ Contexto: reduzimos 40% do tempo de review em 3 meses.
 - 📝 Escreve posts em PT-BR e EN (bilíngue por padrão)
 - 📁 Salva arquivos `.md` seguindo a convenção do projeto
 - 🖼️ Gera banners 1200x628 com Python/Pillow
+- 🎠 Gera carrosséis 1:1 com 2slides via MCP (com fallback local em `generate-carousel.py`)
 - 📡 Publica via LinkedIn API (sempre pede confirmação)
 - 🔍 Lê posts existentes como referência de tom e estilo
 
@@ -210,6 +211,64 @@ O `install` cria a configuração automaticamente em:
 npx @maheidem/linkedin-mcp status
 ```
 
+## 🎠 2slides MCP para carrosséis
+
+Para carrosséis de LinkedIn, o projeto agora usa **2slides** como caminho principal. O objetivo é gerar um PDF pronto para publicação, com melhor design do que o fluxo local via Pillow.
+
+### Onde configurar
+
+Para **GitHub Copilot CLI**, prefira configuração de usuário em:
+
+```text
+~/.copilot/mcp-config.json
+```
+
+Para **VS Code**, você também pode usar:
+
+```text
+.vscode/mcp.json
+```
+
+### Exemplo de configuração
+
+> Use configuração de usuário para não expor a API key no repositório.
+
+```json
+{
+  "mcpServers": {
+    "2slides": {
+      "type": "http",
+      "url": "https://2slides.com/api/mcp?apikey=YOUR_2SLIDES_API_KEY",
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+### Workflow recomendado para o agente
+
+1. O agente escreve o post e decide se `formato=carrossel` faz mais sentido
+2. O agente monta o roteiro dos slides
+3. O 2slides gera o PDF com:
+   - `aspectRatio: "1:1"`
+   - `designStyle: "modern, dark background (#0D1117), bold typography, purple accent"`
+   - `resolution: "2K"`
+4. O PDF final pode ser salvo em:
+
+```text
+images/post-{N}-{tema}-carousel.pdf
+```
+
+### Fallback offline
+
+Se o 2slides não estiver disponível, continue usando o fluxo local com:
+
+```bash
+python generate-carousel.py
+```
+
+Esse fallback é útil para protótipos, testes offline e situações em que a API key não está configurada.
+
 ## 📡 Publicar posts via API
 
 Com o token configurado, posts podem ser publicados diretamente via API:
@@ -243,9 +302,21 @@ Invoke-RestMethod -Uri "https://api.linkedin.com/v2/ugcPosts" `
     -Method POST -Headers $headers -Body $body
 ```
 
+### Publicar carrossel orgânico como documento
+
+Carrossel orgânico via API deve ser publicado como **document post** (PDF), não como carousel ad. O fluxo é:
+
+1. `POST /rest/documents?action=initializeUpload`
+2. Upload do PDF para a `uploadUrl`
+3. Poll em `GET /rest/documents/{documentUrn}` até `status = AVAILABLE`
+4. `POST /rest/posts` com `content.media.id = urn:li:document:...`
+
+O agente já foi atualizado para orientar esse fluxo quando `formato=carrossel`.
+
 ## 🔒 Segurança
 
 - **Nunca commite** os arquivos de `~/.linkedin-mcp/tokens/` — eles contêm credenciais sensíveis
+- **Nunca commite** API keys em `.vscode/mcp.json` ou arquivos de repositório; prefira `~/.copilot/mcp-config.json`
 - Rotacione o **Client Secret** no [Developer Portal](https://www.linkedin.com/developers/apps) se ele for exposto
 - O **Access Token** tem validade de ~60 dias; renove quando necessário
 - Adicione `~/.linkedin-mcp/` ao seu `.gitignore` global

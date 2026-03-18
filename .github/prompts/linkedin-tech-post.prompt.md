@@ -252,16 +252,21 @@ Cores por tema (consistência da série):
 
 Carrosséis geram **6x mais engajamento** que texto puro. Quando `formato=carrossel`:
 
-1. Gerar PDF com slides 1080x1080 usando Python (Pillow ou reportlab)
+1. Preparar primeiro o **roteiro dos slides** (5 a 8 páginas)
 2. Estrutura do carrossel:
    - **Slide 1 (Capa):** Hook com conflito claro
    - **Slides 2-7 (Conteúdo):** 1 ideia por slide, com progressão problema → insight → implicação
    - **Slide final:** CTA específico + hashtags + "Salve este post para referência"
-3. Design: fundo escuro (#0D1117), texto branco, acento na cor do tema
-4. Texto máximo por slide: 50 palavras
-5. Preferir carrossel para comparativos, listas de aprendizados, frameworks/checklists e temas técnicos densos
-6. Ver `generate-carousel.py` como template base
-7. Salvar em `images/post-{N}-{tema}-carousel.pdf`
+3. Se houver acesso a ferramentas, **preferir 2slides via MCP**:
+   - `slides_create_pdf_slides`
+   - `jobs_get`
+   - `themes_search` quando precisar descobrir um tema visual
+4. Design style recomendado: `modern, dark background (#0D1117), bold typography, purple accent`
+5. Aspect ratio recomendado: `1:1`
+6. Texto máximo por slide: 50 palavras
+7. Preferir carrossel para comparativos, listas de aprendizados, frameworks/checklists e temas técnicos densos
+8. Se não houver acesso ao 2slides, ainda assim gerar o roteiro slide a slide para produção posterior
+9. Ver `generate-carousel.py` como fallback local
 
 ### Step 7: Apresentar ao autor
 
@@ -272,6 +277,7 @@ Entregar:
 4. **Uma variação alternativa do hook** — para o autor escolher
 5. **Dica de imagem/visual** — sugerir se um visual complementaria o post
 6. **Plano de comentário inicial** — sugerir 1 pergunta de follow-up para responder os primeiros comentários
+7. **Se for carrossel:** incluir o roteiro final de slides e informar que a publicação orgânica deve ser feita como document post (PDF)
 
 ### Step 8: Publicar (se solicitado)
 

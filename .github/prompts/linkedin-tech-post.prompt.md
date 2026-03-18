@@ -41,6 +41,35 @@ linkedin/
 
 **Publicação:** Via LinkedIn API (OAuth2 token em `~/.linkedin-mcp/tokens/access_token.json`)
 
+## Regras de Viralidade (baseadas em dados do algoritmo)
+
+O algoritmo do LinkedIn prioriza 3 sinais: **relevância**, **expertise** e **engajamento significativo**. Regras baseadas em análises de 1M+ posts (Buffer, Socialinsider, Sprout Social).
+
+### Golden Hour (primeiros 60 minutos)
+- O alcance do post é **definido nos primeiros 60 minutos** após publicar
+- Se o post recebe comentários nesse período, o algoritmo amplia a distribuição
+- **Ação:** sempre orientar o autor a estar disponível para responder comentários imediatamente
+
+### Sem links externos no corpo
+- O LinkedIn **penaliza posts com links externos** (reduz distribuição)
+- Links devem ir no **primeiro comentário**, nunca no corpo do post
+
+### Dados e números concretos
+- Posts com **pelo menos 1 dado ou número concreto** geram mais credibilidade
+- Se o autor não fornecer dados, perguntar por métricas antes de escrever
+
+### Comentários > Likes > Shares
+- O CTA deve sempre direcionar para **comentário** (pergunta aberta, pedido de experiência)
+- ❌ Nunca pedir likes ou shares explicitamente
+
+### Tags estratégicas
+- Sugerir **1 a 3 pessoas relevantes** para o autor considerar marcar
+
+### Formato de maior impacto
+- **Carrosséis (PDF)**: 6x mais engajamento que texto puro
+- **Vídeo nativo**: 3x mais que texto
+- Quando o conteúdo permitir, sugerir formato carrossel ao autor
+
 ## Inputs
 
 | Variável | Descrição | Obrigatório |
@@ -49,7 +78,7 @@ linkedin/
 | `contexto` | Experiência real, projeto ou situação que originou o post | Recomendado |
 | `audiencia` | Público-alvo (devs, líderes, arquitetos, geral) | Default: tech leads e arquitetos |
 | `tom` | Tom desejado (didático, provocativo, storytelling, técnico-direto) | Default: didático |
-| `tamanho` | Curto (~500 chars), Médio (~1200 chars), Longo (~2500 chars) | Default: Longo |
+| `tamanho` | Curto (~500 chars), Médio (~1500 chars), Longo (~2800 chars) | Default: Longo |
 | `idiomas` | pt, en, ou ambos | Default: ambos |
 | `cta` | Call-to-action desejado (pergunta, link, convite) | Default: pergunta aberta |
 | `serie` | Se faz parte de uma série, indicar nome e número | Opcional |
@@ -134,6 +163,12 @@ Se `idiomas` = "ambos" (default):
 - Mix de amplas (#AI, #Azure, #DevOps) e específicas (#GitHubCopilot, #SRE)
 - Colocar no final, separadas do corpo
 
+**⚠️ Limite de caracteres do LinkedIn:**
+- O LinkedIn permite no máximo **3000 caracteres** por post (incluindo hashtags)
+- O post final DEVE ter no máximo 2950 caracteres (margem de segurança)
+- Se o post ficar acima de 2950 chars, cortar conteúdo redundante mantendo hook, estrutura e CTA
+- Sempre contar os caracteres antes de entregar e informar a contagem ao autor
+
 ### Step 4: Revisar com checklist de qualidade
 
 **Antes de entregar, verificar:**
@@ -142,10 +177,15 @@ Se `idiomas` = "ambos" (default):
 - [ ] **Tem substância?** — O post entrega valor real ou é só opinião rasa?
 - [ ] **É autêntico?** — Soa como uma pessoa real compartilhando experiência?
 - [ ] **Escaneável?** — Dá pra entender a mensagem só batendo o olho?
+- [ ] **Contém dados/números?** — Pelo menos 1 dado concreto no corpo?
+- [ ] **Sem links externos?** — Links devem ir no 1º comentário, não no corpo?
 - [ ] **Tamanho adequado?** — Respeita o tamanho solicitado pelo autor?
+- [ ] **Dentro do limite?** — Post tem no máximo 2950 caracteres (limite LinkedIn: 3000)?
 - [ ] **Sem auto-promoção vazia?** — Foca no aprendizado, não no autor?
-- [ ] **CTA natural?** — O fechamento convida conversa, não likes?
+- [ ] **CTA gera comentário?** — O fechamento convida resposta genuína, não likes?
+- [ ] **Formato adequado?** — Texto é o melhor formato, ou carrossel/vídeo seriam mais eficazes?
 - [ ] **Hashtags relevantes?** — 3-5, sem spam de tags genéricas?
+- [ ] **Sugestão de tags?** — 1-3 pessoas relevantes identificadas?
 
 ### Step 5: Salvar os arquivos
 
@@ -257,9 +297,22 @@ Invoke-RestMethod -Uri "https://api.linkedin.com/v2/ugcPosts" -Method POST -Head
 - Se o tema for muito amplo: sugerir 2-3 ângulos específicos para o autor escolher
 - Se o post ficar longo demais: oferecer versão completa + versão cortada
 
-## Próximos Passos
+## Próximos Passos (Estratégia Pós-Publicação)
 
-Após publicar, sugerir:
-- Responder TODOS os comentários nas primeiras 2 horas (algoritmo prioriza)
-- Republicar o tema em formato diferente em 2-4 semanas (lista → storytelling, por exemplo)
-- Criar uma série se o tema render (Part 1, 2, 3)
+### Golden Hour (0-60 minutos)
+- **Responder TODOS os comentários** nos primeiros 60 minutos
+- Pedir para **3-5 colegas comentarem** nos primeiros 30 minutos (seed engagement)
+- **NÃO editar o post** nas primeiras 2 horas (pode resetar distribuição)
+
+### Primeiras 24 horas
+- Continuar respondendo comentários
+- Se ganhar tração, postar link relevante no 1º comentário
+
+### Reciclagem (2-4 semanas depois)
+- Transformar **texto → carrossel** (ou vice-versa)
+- Mesmo insight, formato diferente = audiência diferente
+
+### Horários otimizados para publicar
+- 🇧🇷 BR: terça a quinta, 8h–10h BRT (primário) ou 17h–19h BRT
+- 🌎 US/Global: terça a quinta, 7h–9h EST
+- ⚠️ Evitar: sexta após 14h, sábado, domingo

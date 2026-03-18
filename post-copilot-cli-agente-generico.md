@@ -1,0 +1,7 @@
+Debugar no terminal já era meu pesadelo. Agora, o GitHub Copilot CLI virou meu copiloto literal: aperto uma tecla e ele me mostra o que está quebrando, gera scripts repetitivos e até me ajuda a entender codebases inteiras em segundos. Antes eu precisava abrir várias abas, esperar IDEs carregarem e ficar pulando entre contextos — hoje, tudo acontece na linha de comando, conversando com uma IA que conhece o repositório como eu conheço meu teclado.
+
+O Copilot CLI me força a pensar como um prompt engineer: descrevo o que quero resolver e ele sugere o próximo passo. O resultado? Menos tempo perdido em configurações e mais foco em entregar valor. Preciso de um script de deploy? Ele gera. Quero entender como a função X é usada em todo o projeto? Ele mapeia. Preciso replicar um bug no terminal? Ele me ajuda a reproduzir e isolar o problema.
+
+E não é mágica isolada — é um workflow. Integro Copilot CLI ao meu dia a dia: uso para descobrir dependências, gerar testes, verificar logs, escrever commits melhores. A experiência é tão fluida que às vezes esqueço que sou eu quem está comandando. É provocador porque expõe o quanto o terminal pode ser poderoso quando temos IA ao lado; e desafiador porque exige uma comunicação precisa com o Copilot.
+
+Se você ainda não usa, experimente: sente no terminal, descreva seu problema e veja o Copilot responder em minutos. O futuro do desenvolvimento está no prompt, e quem dominar essa conversa vai liderar equipes mais rápidas e inteligentes.

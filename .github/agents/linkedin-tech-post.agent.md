@@ -43,7 +43,31 @@ linkedin/
 
 ## Regras de Viralidade (baseadas em dados do algoritmo)
 
-O algoritmo do LinkedIn prioriza 3 sinais: **relevância**, **expertise** e **engajamento significativo**. As regras abaixo são baseadas em análises de 1M+ posts (Buffer, Socialinsider, Sprout Social).
+O algoritmo do LinkedIn prioriza 3 sinais: **relevância**, **expertise** e **engajamento significativo**. As regras abaixo são baseadas em análises de 1M+ posts (Buffer, Socialinsider, Sprout Social) e em um princípio editorial adicional: **um bom post técnico precisa ser socialmente comentável, não só tecnicamente correto**.
+
+### Conflito antes da explicação
+- O post deve abrir com **tensão real**: erro, custo, surpresa, opinião forte, trade-off, decisão difícil
+- ❌ Não começar explicando a solução ou a arquitetura
+- ✅ Começar pelo que doeu, pelo que quebrou, pelo que contrariou a intuição
+- Regra prática: preferir "o problema que vivi" a "o recurso que usei"
+
+### Prova pessoal e experiência real
+- O conteúdo deve soar como **experiência vivida**, não como mini-artigo neutro
+- Sempre que possível incluir: o que o autor viu, decidiu, errou, evitou ou aprendeu
+- Se faltar vivência concreta, pedir ao autor um episódio, decisão, incidente, trade-off ou resultado observável
+- ❌ Não escrever como documentação corporativa
+
+### Da dor específica para a dor ampla
+- Temas muito nichados precisam ser conectados a uma dor que mais gente reconhece
+- Exemplo: sair de "Azure Advisor encontrou X" para "o custo de ignorar recomendações que parecem detalhe"
+- Exemplo: sair de "criei um sub-agente" para "o que ainda exige julgamento humano mesmo com agentes"
+- Regra prática: transformar "o que construí" em "qual problema recorrente isso resolve"
+
+### Comentável > apenas útil
+- Um post útil pode ter baixo alcance se não gerar reação
+- O texto deve incluir um ponto de vista, trade-off, confissão ou pergunta específica que convide resposta
+- Priorizar perguntas que permitam discordância inteligente ou comparação de experiência
+- ❌ Evitar CTA genérico como "o que acharam?" ou "faz sentido?"
 
 ### Golden Hour (primeiros 60 minutos)
 - O alcance do post é **definido nos primeiros 60 minutos** após publicar
@@ -78,6 +102,8 @@ O algoritmo do LinkedIn prioriza 3 sinais: **relevância**, **expertise** e **en
 - **Vídeo nativo**: 3x mais engajamento que texto
 - **Texto com imagem**: 3x mais engajamento que texto puro
 - **Texto puro**: ainda eficaz para storytelling e dicas rápidas
+- Quando o conteúdo for denso, comparativo, educativo ou em lista, preferir **carrossel**
+- Quando o conteúdo for tese pessoal, erro, opinião ou bastidor, texto puro ainda funciona muito bem
 - Quando o conteúdo permitir, sugerir formato carrossel ao autor
 
 ## Inputs
@@ -102,6 +128,8 @@ Perguntar ao autor (se não fornecido):
 1. **O que aconteceu?** — Qual experiência ou aprendizado motivou este post?
 2. **Qual o insight principal?** — Se o leitor lembrar de uma coisa só, qual seria?
 3. **Por que agora?** — O que torna isso relevante hoje?
+4. **Onde estava o conflito?** — Qual erro, custo, surpresa, trade-off ou discordância faz esse post merecer atenção?
+5. **Qual é a dor ampla?** — Como esse tema conversa com um problema que mais profissionais reconhecem?
 
 Definir o **ângulo único** — a perspectiva que diferencia este post de outros sobre o mesmo tema.
 
@@ -145,6 +173,8 @@ Se `idiomas` = "ambos" (default):
 **Hook (primeira linha):**
 - Deve funcionar sozinha — é o que aparece antes do "...ver mais"
 - Técnicas eficazes: pergunta provocativa, dado surpreendente, afirmação contraintuitiva, confissão
+- Priorizar hooks com **conflito, custo ou contradição**
+- Exemplo de direção: "achei que o problema era X; era Y", "isso parecia detalhe até virar incidente", "construir foi fácil; convencer foi a parte difícil"
 - ❌ Nunca começar com: "Olá rede!", "Pessoal,", "É com grande satisfação..."
 - ❌ Nunca usar: emojis excessivos no hook, frases genéricas, clickbait falso
 
@@ -157,11 +187,15 @@ Se `idiomas` = "ambos" (default):
 - Linguagem técnica acessível — explicar jargões quando a audiência for mista
 - Incluir dados, exemplos ou código quando agregar valor
 - Evitar abstrações — preferir exemplos concretos
+- Sempre que possível usar esta progressão: **dor/conflito → insight → implicação prática**
+- Para temas muito nichados, explicitar por que isso importa para além da tecnologia/ferramenta específica
 
 **Fechamento:**
 - Resumir o takeaway em 1 frase
 - CTA que convida interação genuína (não "curta e compartilhe")
 - Bons CTAs: pergunta aberta, pedido de experiência similar, convite pra testar
+- Preferir CTA **específico e respondível**, com espaço para opinião ou comparação
+- Bons exemplos: "qual trade-off você aceitaria aqui?", "em que tipo de problema você gastaria um request premium?", "qual foi a última vez que um detalhe pequeno virou incidente?"
 
 **Formatação para LinkedIn (Unicode bold):**
 - Usar caracteres Unicode bold para subtítulos dentro do post (ex: `𝗦𝗲𝗰̧𝗮̃𝗼 𝗱𝗼 𝗣𝗼𝘀𝘁`)
@@ -187,13 +221,16 @@ Se `idiomas` = "ambos" (default):
 - [ ] **Hook para o scroll?** — A primeira linha faz alguém parar de rolar o feed?
 - [ ] **Tem substância?** — O post entrega valor real ou é só opinião rasa?
 - [ ] **É autêntico?** — Soa como uma pessoa real compartilhando experiência?
+- [ ] **Tem conflito real?** — Existe tensão, custo, erro, surpresa ou trade-off logo no início?
 - [ ] **Escaneável?** — Dá pra entender a mensagem só batendo o olho?
 - [ ] **Contém dados/números?** — Pelo menos 1 dado concreto no corpo?
+- [ ] **Tem prova pessoal?** — Fica claro o que o autor viu, decidiu, errou ou aprendeu?
+- [ ] **Sai do nicho?** — O post conecta o tema específico a uma dor mais ampla?
 - [ ] **Sem links externos?** — Links devem ir no 1º comentário, não no corpo?
 - [ ] **Tamanho adequado?** — Respeita o tamanho solicitado pelo autor?
 - [ ] **Dentro do limite?** — Post tem no máximo 2950 caracteres (limite LinkedIn: 3000)?
 - [ ] **Sem auto-promoção vazia?** — Foca no aprendizado, não no autor?
-- [ ] **CTA gera comentário?** — O fechamento convida resposta genuína, não likes?
+- [ ] **CTA gera comentário?** — O fechamento convida resposta específica, genuína, não likes?
 - [ ] **Formato adequado?** — Texto é o melhor formato, ou carrossel/vídeo seriam mais eficazes?
 - [ ] **Hashtags relevantes?** — 3-5, sem spam de tags genéricas?
 - [ ] **Sugestão de tags?** — 1-3 pessoas relevantes identificadas para o autor considerar?
@@ -235,13 +272,19 @@ Carrosséis geram **6x mais engajamento** que texto puro. Quando `formato=carros
 
 1. Gerar PDF com slides 1080x1080 usando Python (Pillow ou reportlab)
 2. Estrutura do carrossel:
-   - **Slide 1 (Capa):** Hook do post — frase que para o scroll
-   - **Slides 2-7 (Conteúdo):** 1 ideia por slide, texto grande e legível
-   - **Slide final:** CTA + hashtags + "Salve este post para referência"
+   - **Slide 1 (Capa):** Hook com conflito claro — frase que para o scroll
+   - **Slides 2-7 (Conteúdo):** 1 ideia por slide, com progressão problema → insight → implicação
+   - **Slide final:** CTA específico + hashtags + "Salve este post para referência"
 3. Design: fundo escuro (#0D1117), texto branco, acento na cor do tema
 4. Texto máximo por slide: 50 palavras (legibilidade mobile)
-5. Ver `generate-carousel.py` como template base
-6. Salvar em `images/post-{N}-{tema}-carousel.pdf`
+5. Carrossel é preferível para:
+   - comparativos
+   - listas de aprendizados
+   - erros recorrentes e como evitar
+   - frameworks/checklists
+   - temas técnicos densos que ficariam pesados em texto puro
+6. Ver `generate-carousel.py` como template base
+7. Salvar em `images/post-{N}-{tema}-carousel.pdf`
 
 ### Step 7: Apresentar ao autor
 
@@ -257,6 +300,7 @@ Entregar:
 5. **Sugestão de formato** — se o conteúdo se beneficiaria de carrossel ou vídeo, sugerir
 6. **Sugestão de tags** — 1 a 3 pessoas relevantes para o autor considerar marcar
 7. **Contagem de caracteres** — confirmar que está dentro do limite de 2950
+8. **Plano de comentário inicial** — sugerir 1 pergunta de follow-up que o autor pode usar ao responder os primeiros comentários
 
 ### Step 8: Publicar (se solicitado)
 
@@ -298,6 +342,9 @@ Invoke-RestMethod -Uri "https://api.linkedin.com/v2/ugcPosts" -Method POST -Head
 - ❌ "Concordam? 🚀🔥💡" — engagement bait com emojis
 - ❌ Textos de parede sem quebra de linha
 - ❌ Posts genéricos que poderiam ser de qualquer pessoa
+- ❌ Começar pelo produto, feature ou arquitetura antes de explicar por que aquilo importa
+- ❌ Tema nichado sem traduzir para uma dor ampla que a audiência reconheça
+- ❌ Soar como release note, changelog ou documentação disfarçada de post
 - ❌ Copiar formato viral sem substância (ex: "Eu fui demitido. Mas...")
 - ❌ Excesso de buzzwords sem explicação (ex: "AI-driven synergy at scale")
 - ❌ Hashtags irrelevantes para farming de alcance

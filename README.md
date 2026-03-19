@@ -9,18 +9,73 @@ linkedin/
 ├── README.md
 ├── .github/
 │   ├── agents/
-│   │   └── linkedin-tech-post.agent.md    # Agente @linkedin-tech-post
+│   │   └── linkedin-tech-post.agent.md    # Agente orquestrador @linkedin-tech-post
 │   └── prompts/
-│       └── linkedin-tech-post.prompt.md   # Slash command /linkedin-tech-post
-├── images/                                # Banners gerados (1200x628)
+│       ├── linkedin-tech-post.prompt.md   # Slash command /linkedin-tech-post
+│       └── skills/                        # Skills editoriais especializadas
+│           ├── brief-extractor.prompt.md
+│           ├── angle-finder.prompt.md
+│           ├── hook-generator.prompt.md
+│           ├── commentability-checker.prompt.md
+│           ├── proof-checker.prompt.md
+│           ├── format-decider.prompt.md
+│           ├── carousel-planner.prompt.md
+│           └── post-mortem-analyzer.prompt.md
+├── templates/
+│   ├── output-schema/                     # Schemas de saída padronizados
+│   │   ├── post-package.md
+│   │   ├── carousel-outline.md
+│   │   └── post-review-scorecard.md
+│   └── heuristics/                        # Padrões aprendidos
+│       ├── hooks.md
+│       ├── ctas.md
+│       └── high-signal-patterns.md
+├── examples/
+│   ├── winning-posts/                     # Posts de alta performance
+│   └── comment-patterns/                  # Padrões de comentários valiosos
+├── images/                                # Banners e carrosséis
 └── post-{N}-{tema}-{idioma}.md            # Posts gerados
 ```
 
-## 🤖 Agente de Criação de Posts
+## 🏗️ Arquitetura
 
-Este projeto inclui um agente personalizado do GitHub Copilot para criar posts de LinkedIn. Ele está disponível em duas formas:
+O projeto usa uma **arquitetura modular orientada a comentários qualificados**:
 
-### `@linkedin-tech-post` (Agente)
+### Agente Orquestrador (`@linkedin-tech-post`)
+
+O agente principal coordena um pipeline editorial de 12 etapas:
+
+```
+Briefing → Ângulo → Formato → Hooks → Redação → Validação → Visual → Publicação
+```
+
+### Skills Editoriais
+
+Capacidades especializadas implementadas como prompts reutilizáveis:
+
+| Skill | Responsabilidade |
+|---|---|
+| `brief-extractor` | Transforma pedido bruto em briefing estruturado |
+| `angle-finder` | Encontra o ângulo mais debatível |
+| `hook-generator` | Gera e ranqueia hooks de alto impacto |
+| `commentability-checker` | Avalia se o post gera comentário real |
+| `proof-checker` | Valida substância, dados e prova pessoal |
+| `format-decider` | Decide texto vs carrossel vs banner |
+| `carousel-planner` | Cria roteiro visual de carrossel |
+| `post-mortem-analyzer` | Extrai heurísticas de posts publicados |
+
+### Scorecard de Qualidade
+
+Todo post passa por validação obrigatória antes de ser apresentado:
+
+- **Comentabilidade** (meta >= 4/6): tese defendível, CTA respondível, tensão visível...
+- **Substância** (meta >= 3/5): episódio real, dado concreto, trade-off explícito...
+
+Posts reprovados são reescritos antes de serem entregues ao autor.
+
+## 🤖 Como usar
+
+### `@linkedin-tech-post` (Agente Orquestrador)
 
 Agente autônomo com acesso a ferramentas. Pode ler arquivos, criar posts, gerar banners e publicar.
 
